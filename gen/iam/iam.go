@@ -1261,7 +1261,7 @@ type GetAccountPasswordPolicyResponse struct {
 
 // GetAccountSummaryResponse is undocumented.
 type GetAccountSummaryResponse struct {
-	SummaryMap map[string]int `query:"SummaryMap" xml:"GetAccountSummaryResult>SummaryMap"`
+	SummaryMap SummaryMapType `query:"SummaryMap.member" xml:"GetAccountSummaryResult>SummaryMap>member"`
 }
 
 // GetCredentialReportResponse is undocumented.
@@ -1973,6 +1973,24 @@ const (
 	SummaryKeyTypeUsersQuota                      = "UsersQuota"
 )
 
+type SummaryMapType map[string]int
+
+/*
+// UnmarshalXML implements xml.UnmarshalXML interface for map
+func (m *SummaryMapType) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	(*m) = make(SummaryMapType)
+	v := struct {
+		b string
+		summaryMapTypea []struct {
+			 string
+			 aws.IntegerValue
+		}
+	}{}
+
+	return nil
+}
+*/
+
 // CreateAccessKeyResult is a wrapper for CreateAccessKeyResponse.
 type CreateAccessKeyResult struct {
 	AccessKey *AccessKey `query:"AccessKey" xml:"CreateAccessKeyResult>AccessKey"`
@@ -2040,7 +2058,7 @@ type GetAccountPasswordPolicyResult struct {
 
 // GetAccountSummaryResult is a wrapper for GetAccountSummaryResponse.
 type GetAccountSummaryResult struct {
-	SummaryMap map[string]int `query:"SummaryMap" xml:"GetAccountSummaryResult>SummaryMap"`
+	SummaryMap SummaryMapType `query:"SummaryMap.member" xml:"GetAccountSummaryResult>SummaryMap>member"`
 }
 
 // GetCredentialReportResult is a wrapper for GetCredentialReportResponse.

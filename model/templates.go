@@ -175,6 +175,26 @@ func New(creds aws.CredentialsProvider, region string, client *http.Client) *{{ 
 {{ end }}
 
 {{ range $name, $s := .Shapes }}
+{{ if eq $s.ShapeType "map" }}
+type {{ exportable $name }} map[{{ $s.Key.ElementType }}]{{ $s.Value.ElementType }}
+
+/*
+// UnmarshalXML implements xml.UnmarshalXML interface for map
+func (m *{{ exportable $name }}) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	(*m) = make({{ exportable $name }})
+	v := struct {
+		{{ $s.LocationName }}b string
+		{{ $s.Name }}a []struct {
+			{{ $s.KeyRef.LocationName }} {{ $s.Key.ElementType }}
+			{{ $s.ValueRef.LocationName }} {{ $s.ValueRef.WrappedType }}
+		}
+	}{}
+
+	return nil
+}
+*/
+{{ end }}
+
 {{ if eq $s.ShapeType "structure" }}
 {{ if not $s.Exception }}
 

@@ -611,6 +611,24 @@ type DocumentSuggesterOptions struct {
 	SourceField    aws.StringValue `query:"SourceField" xml:"SourceField"`
 }
 
+type DomainNameMap map[string]string
+
+/*
+// UnmarshalXML implements xml.UnmarshalXML interface for map
+func (m *DomainNameMap) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	(*m) = make(DomainNameMap)
+	v := struct {
+		b string
+		DomainNameMapa []struct {
+			 string
+			 aws.StringValue
+		}
+	}{}
+
+	return nil
+}
+*/
+
 // DomainStatus is undocumented.
 type DomainStatus struct {
 	ARN                    aws.StringValue  `query:"ARN" xml:"ARN"`
@@ -744,7 +762,7 @@ type Limits struct {
 
 // ListDomainNamesResponse is undocumented.
 type ListDomainNamesResponse struct {
-	DomainNames map[string]string `query:"DomainNames" xml:"ListDomainNamesResult>DomainNames"`
+	DomainNames DomainNameMap `query:"DomainNames.member" xml:"ListDomainNamesResult>DomainNames>member"`
 }
 
 // LiteralArrayOptions is undocumented.
@@ -982,7 +1000,7 @@ type IndexDocumentsResult struct {
 
 // ListDomainNamesResult is a wrapper for ListDomainNamesResponse.
 type ListDomainNamesResult struct {
-	DomainNames map[string]string `query:"DomainNames" xml:"ListDomainNamesResult>DomainNames"`
+	DomainNames DomainNameMap `query:"DomainNames.member" xml:"ListDomainNamesResult>DomainNames>member"`
 }
 
 // UpdateAvailabilityOptionsResult is a wrapper for UpdateAvailabilityOptionsResponse.

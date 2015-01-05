@@ -161,11 +161,16 @@ func (m Member) QueryTag(wrapper string) string {
 		}
 	}
 
-	if m.Shape().ShapeType == "list" {
+	if stype := m.Shape().ShapeType; stype == "list" || stype == "map" {
 		if !m.Shape().Flattened {
 			prefix = append(prefix, "member")
 		} else {
-			loc := m.Shape().MemberRef.LocationName
+			var loc string
+			if ref := m.Shape().MemberRef; ref != nil {
+				loc = ref.LocationName
+			} else {
+				loc = m.LocationName
+			}
 			prefix = append(prefix, loc)
 		}
 	}
@@ -178,8 +183,13 @@ func (m Member) QueryTag(wrapper string) string {
 		}
 	}
 
-	if m.Shape().ShapeType == "list" {
-		loc := m.Shape().MemberRef.LocationName
+	if stype := m.Shape().ShapeType; stype == "list" || stype == "map" {
+		var loc string
+		if ref := m.Shape().MemberRef; ref != nil {
+			loc = ref.LocationName
+		} else {
+			loc = m.LocationName
+		}
 		if loc == "" {
 			loc = "member"
 		}
@@ -384,6 +394,9 @@ func (s *Shape) ElementType() string {
 	case "string":
 		return "string"
 	case "map":
+		if service.Metadata.Protocol == "query" {
+			return exportable(s.Name)
+		}
 		return "map[" + s.Key().ElementType() + "]" + s.Value().ElementType()
 	case "list":
 		return "[]" + s.Member().ElementType()
@@ -417,6 +430,9 @@ func (s *Shape) Type() string {
 	case "string":
 		return "aws.StringValue"
 	case "map":
+		if service.Metadata.Protocol == "query" {
+			return exportable(s.Name)
+		}
 		return "map[" + s.Key().ElementType() + "]" + s.Value().ElementType()
 	case "list":
 		return "[]" + s.Member().ElementType()

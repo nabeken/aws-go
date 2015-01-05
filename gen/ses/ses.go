@@ -305,6 +305,24 @@ type Destination struct {
 	ToAddresses  []string `query:"ToAddresses.member" xml:"ToAddresses>member"`
 }
 
+type DkimAttributes map[string]IdentityDkimAttributes
+
+/*
+// UnmarshalXML implements xml.UnmarshalXML interface for map
+func (m *DkimAttributes) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	(*m) = make(DkimAttributes)
+	v := struct {
+		b string
+		DkimAttributesa []struct {
+			 string
+			 *IdentityDkimAttributes
+		}
+	}{}
+
+	return nil
+}
+*/
+
 // GetIdentityDkimAttributesRequest is undocumented.
 type GetIdentityDkimAttributesRequest struct {
 	Identities []string `query:"Identities.member" xml:"Identities>member"`
@@ -312,7 +330,7 @@ type GetIdentityDkimAttributesRequest struct {
 
 // GetIdentityDkimAttributesResponse is undocumented.
 type GetIdentityDkimAttributesResponse struct {
-	DkimAttributes map[string]IdentityDkimAttributes `query:"DkimAttributes" xml:"GetIdentityDkimAttributesResult>DkimAttributes"`
+	DkimAttributes DkimAttributes `query:"DkimAttributes.member" xml:"GetIdentityDkimAttributesResult>DkimAttributes>member"`
 }
 
 // GetIdentityNotificationAttributesRequest is undocumented.
@@ -322,7 +340,7 @@ type GetIdentityNotificationAttributesRequest struct {
 
 // GetIdentityNotificationAttributesResponse is undocumented.
 type GetIdentityNotificationAttributesResponse struct {
-	NotificationAttributes map[string]IdentityNotificationAttributes `query:"NotificationAttributes" xml:"GetIdentityNotificationAttributesResult>NotificationAttributes"`
+	NotificationAttributes NotificationAttributes `query:"NotificationAttributes.member" xml:"GetIdentityNotificationAttributesResult>NotificationAttributes>member"`
 }
 
 // GetIdentityVerificationAttributesRequest is undocumented.
@@ -332,7 +350,7 @@ type GetIdentityVerificationAttributesRequest struct {
 
 // GetIdentityVerificationAttributesResponse is undocumented.
 type GetIdentityVerificationAttributesResponse struct {
-	VerificationAttributes map[string]IdentityVerificationAttributes `query:"VerificationAttributes" xml:"GetIdentityVerificationAttributesResult>VerificationAttributes"`
+	VerificationAttributes VerificationAttributes `query:"VerificationAttributes.member" xml:"GetIdentityVerificationAttributesResult>VerificationAttributes>member"`
 }
 
 // GetSendQuotaResponse is undocumented.
@@ -397,6 +415,24 @@ type Message struct {
 	Body    *Body    `query:"Body" xml:"Body"`
 	Subject *Content `query:"Subject" xml:"Subject"`
 }
+
+type NotificationAttributes map[string]IdentityNotificationAttributes
+
+/*
+// UnmarshalXML implements xml.UnmarshalXML interface for map
+func (m *NotificationAttributes) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	(*m) = make(NotificationAttributes)
+	v := struct {
+		b string
+		NotificationAttributesa []struct {
+			 string
+			 *IdentityNotificationAttributes
+		}
+	}{}
+
+	return nil
+}
+*/
 
 // Possible values for SES.
 const (
@@ -476,6 +512,24 @@ type SetIdentityNotificationTopicRequest struct {
 type SetIdentityNotificationTopicResponse struct {
 }
 
+type VerificationAttributes map[string]IdentityVerificationAttributes
+
+/*
+// UnmarshalXML implements xml.UnmarshalXML interface for map
+func (m *VerificationAttributes) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	(*m) = make(VerificationAttributes)
+	v := struct {
+		b string
+		VerificationAttributesa []struct {
+			 string
+			 *IdentityVerificationAttributes
+		}
+	}{}
+
+	return nil
+}
+*/
+
 // Possible values for SES.
 const (
 	VerificationStatusFailed           = "Failed"
@@ -525,17 +579,17 @@ type DeleteIdentityResult struct {
 
 // GetIdentityDkimAttributesResult is a wrapper for GetIdentityDkimAttributesResponse.
 type GetIdentityDkimAttributesResult struct {
-	DkimAttributes map[string]IdentityDkimAttributes `query:"DkimAttributes" xml:"GetIdentityDkimAttributesResult>DkimAttributes"`
+	DkimAttributes DkimAttributes `query:"DkimAttributes.member" xml:"GetIdentityDkimAttributesResult>DkimAttributes>member"`
 }
 
 // GetIdentityNotificationAttributesResult is a wrapper for GetIdentityNotificationAttributesResponse.
 type GetIdentityNotificationAttributesResult struct {
-	NotificationAttributes map[string]IdentityNotificationAttributes `query:"NotificationAttributes" xml:"GetIdentityNotificationAttributesResult>NotificationAttributes"`
+	NotificationAttributes NotificationAttributes `query:"NotificationAttributes.member" xml:"GetIdentityNotificationAttributesResult>NotificationAttributes>member"`
 }
 
 // GetIdentityVerificationAttributesResult is a wrapper for GetIdentityVerificationAttributesResponse.
 type GetIdentityVerificationAttributesResult struct {
-	VerificationAttributes map[string]IdentityVerificationAttributes `query:"VerificationAttributes" xml:"GetIdentityVerificationAttributesResult>VerificationAttributes"`
+	VerificationAttributes VerificationAttributes `query:"VerificationAttributes.member" xml:"GetIdentityVerificationAttributesResult>VerificationAttributes>member"`
 }
 
 // GetSendQuotaResult is a wrapper for GetSendQuotaResponse.
